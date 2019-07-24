@@ -1,4 +1,4 @@
-from tensorflow.keras.applications import imagenet_utils
+from keras.applications import imagenet_utils
 from .builder import build_senet
 from ..utils import load_model_weights
 from ..weights import weights_collection

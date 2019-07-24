@@ -19,7 +19,8 @@ def _get_resnet(name):
                              include_top=include_top,
                              **model_params)
 
-        model.name = name
+        print (name)
+        # model.name = name
 
         if weights:
             load_model_weights(weights_collection, model, weights, classes, include_top)

@@ -8,7 +8,7 @@ from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Model
-from tensorflow.keras.engine import get_source_inputs
+from tensorflow.keras.utils import get_source_inputs
 
 from .params import get_conv_params
 from .params import get_bn_params
