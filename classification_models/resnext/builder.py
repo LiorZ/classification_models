@@ -1,14 +1,14 @@
-import keras.backend as K
-from keras.layers import Input
-from keras.layers import Conv2D
-from keras.layers import MaxPooling2D
-from keras.layers import BatchNormalization
-from keras.layers import Activation
-from keras.layers import GlobalAveragePooling2D
-from keras.layers import ZeroPadding2D
-from keras.layers import Dense
-from keras.models import Model
-from keras.engine import get_source_inputs
+import tensorflow.keras.backend as K
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.layers import ZeroPadding2D
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.engine import get_source_inputs
 
 from .params import get_conv_params
 from .params import get_bn_params
@@ -25,7 +25,7 @@ def build_resnext(
      classes=1000,
      first_conv_filters=64,
      first_block_filters=64):
-    
+
     """
     TODO
     """
@@ -37,13 +37,13 @@ def build_resnext(
             img_input = Input(tensor=input_tensor, shape=input_shape)
         else:
             img_input = input_tensor
-    
+
     # get parameters for model layers
     no_scale_bn_params = get_bn_params(scale=False)
     bn_params = get_bn_params()
     conv_params = get_conv_params()
     init_filters = first_block_filters
-    
+
     # resnext bottom
     x = BatchNormalization(name='bn_data', **no_scale_bn_params)(img_input)
     x = ZeroPadding2D(padding=(3, 3))(x)
@@ -52,20 +52,20 @@ def build_resnext(
     x = Activation('relu', name='relu0')(x)
     x = ZeroPadding2D(padding=(1, 1))(x)
     x = MaxPooling2D((3, 3), strides=(2, 2), padding='valid', name='pooling0')(x)
-    
+
     # resnext body
     for stage, rep in enumerate(repetitions):
         for block in range(rep):
-            
+
             filters = init_filters * (2**stage)
-            
+
             # first block of first stage without strides because we have maxpooling before
             if stage == 0 and block == 0:
                 x = conv_block(filters, stage, block, strides=(1, 1))(x)
-                
+
             elif block == 0:
                 x = conv_block(filters, stage, block, strides=(2, 2))(x)
-                
+
             else:
                 x = identity_block(filters, stage, block)(x)
 
@@ -80,7 +80,7 @@ def build_resnext(
         inputs = get_source_inputs(input_tensor)
     else:
         inputs = img_input
-        
+
     # Create model
     model = Model(inputs, x)
 

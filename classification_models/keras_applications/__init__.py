@@ -1,10 +1,10 @@
-import keras
+import tensorflow.keras
 from .keras_applications.keras_applications import *
 
 set_keras_submodules(
-    backend=keras.backend,
-    layers=keras.layers,
-    models=keras.models,
-    engine=keras.engine,
-    utils=keras.utils,
+    backend=tensorflow.keras.backend,
+    layers=tensorflow.keras.layers,
+    models=tensorflow.keras.models,
+    engine=tensorflow.keras.engine,
+    utils=tensorflow.keras.utils,
 )

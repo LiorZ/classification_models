@@ -1,7 +1,7 @@
-import keras.backend as K
-import keras.layers as kl
+import tensorflow.keras.backend as K
+import tensorflow.keras.layers as kl
 
-from keras.utils.generic_utils import get_custom_objects
+from tensorflow.keras.utils.generic_utils import get_custom_objects
 
 
 class Slice(kl.Layer):

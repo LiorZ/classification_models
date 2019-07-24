@@ -1,14 +1,14 @@
-import keras.backend as K
-from keras.layers import Input
-from keras.layers import Conv2D
-from keras.layers import MaxPooling2D
-from keras.layers import BatchNormalization
-from keras.layers import Activation
-from keras.layers import GlobalAveragePooling2D
-from keras.layers import ZeroPadding2D
-from keras.layers import Dense
-from keras.models import Model
-from keras.engine import get_source_inputs
+import tensorflow.keras.backend as K
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.layers import ZeroPadding2D
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.engine import get_source_inputs
 
 from .params import get_conv_params
 from .params import get_bn_params
@@ -29,7 +29,7 @@ def build_resnet(
      classes=1000,
      block_type='conv',
      attention=None):
-    
+
     """
     TODO
     """
@@ -76,26 +76,26 @@ def build_resnet(
     x = Activation('relu', name='relu0')(x)
     x = ZeroPadding2D(padding=(1, 1))(x)
     x = MaxPooling2D((3, 3), strides=(2, 2), padding='valid', name='pooling0')(x)
-    
+
     # resnet body
     for stage, rep in enumerate(repetitions):
         for block in range(rep):
-            
+
             filters = init_filters * (2**stage)
-            
+
             # first block of first stage without strides because we have maxpooling before
             if block == 0 and stage == 0:
                 x = residual_block(filters, stage, block, strides=(1, 1),
                                    cut='post', attention=attention_block)(x)
-                
+
             elif block == 0:
                 x = residual_block(filters, stage, block, strides=(2, 2),
                                    cut='post', attention=attention_block)(x)
-                
+
             else:
                 x = residual_block(filters, stage, block, strides=(1, 1),
                                    cut='pre', attention=attention_block)(x)
-                
+
     x = BatchNormalization(name='bn1', **bn_params)(x)
     x = Activation('relu', name='relu1')(x)
 
@@ -110,7 +110,7 @@ def build_resnet(
         inputs = get_source_inputs(input_tensor)
     else:
         inputs = img_input
-        
+
     # Create model.
     model = Model(inputs, x)
 

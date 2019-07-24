@@ -4,11 +4,11 @@ import random
 import pytest
 import logging
 import numpy as np
-import keras.backend as K
+import tensorflow.keras.backend as K
 
 from skimage.io import imread
-from keras.applications.imagenet_utils import decode_predictions
-from keras.models import load_model
+from tensorflow.keras.applications.imagenet_utils import decode_predictions
+from tensorflow.keras.models import load_model
 from classification_models import Classifiers
 
 logging.basicConfig(level=logging.DEBUG)
@@ -169,11 +169,11 @@ def test_senets(name, last_dim):
         _test_application_notop(name, last_dim=last_dim)
         _test_application_variable_input_channels(name, last_dim=last_dim)
 
-        
+
 def test_save_load():
     name, last_dim = SERESNEXT_LIST[0]
     _test_save_load(name)
 
-    
+
 if __name__ == '__main__':
     pytest.main([__file__])
